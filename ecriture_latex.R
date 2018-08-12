@@ -1,6 +1,6 @@
 
 # Création du code latex permettant de charger les images et d'écrire les didascalies.
-pour_latex <- metadonnees_utiles %>%
+pour_latex <- corpus_utiles %>%
   transmute(
     path = gsub(chemin_corpus,"../..",path),
     chemin_image =paste0(path,"/",nom_image,".png"),

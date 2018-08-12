@@ -12,7 +12,7 @@ rm(list = ls())
       # - le corpus au format PDF
 
 # definition du chemin du dossier corpus
-chemin_corpus <- "/Users/Raphaelle/Desktop/CORPUS FINAL"
+chemin_corpus <- "/Users/Raphaelle/Desktop/Cloudstation/thèse/Corpus et catalogue/CORPUS FINAL"
 setwd(chemin_corpus)
 #####################################################
 # ETAPE 1 : Création de la base de données générale #
@@ -28,10 +28,34 @@ source("code/creation_database.R")
 # On restreint ici la base de données à certaines illustrations seulement
 # On crée donc une seconde base de données (metadonnees_utiles) qui contient uniquement les metadonnées
 # des images retenues en appliquant les filtres
-metadonnees_utiles <- metadonnees_corpus %>%
-  filter()
+
+corpus_utiles <- corpus_data %>%
+  filter(grepl('Dessin.', support)|is.na(support)==TRUE)
 
 #####################################
 # ETAPE 3 : ecriture du code Latex. # 
 #####################################
 source("code/ecriture_latex.R")
+
+#######################################
+# ETAPE 4 : Statistiques descriptives # 
+#######################################
+lieux <- corpus_data %>% 
+  group_by(toponyme_contemporain) %>%
+  summarise(nb_images = n()) %>%
+  arrange(nb_images)
+
+auteurs <- corpus_data %>% 
+  group_by(auteur,recueil) %>%
+  summarise(voyageur = unique(voyageur)) %>%
+  arrange(auteur)
+
+date <- corpus_data %>% 
+  group_by(date) %>%
+  summarise(n()) %>%
+  arrange(date)
+
+support <- corpus_data %>% 
+  group_by(support) %>%
+  summarise(nb_images = n()) %>%
+  arrange(nb_images)
